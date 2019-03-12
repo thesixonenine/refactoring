@@ -30,11 +30,12 @@ public class Movie {
     /**
      * 价格代码
      */
-    private int priceCode;
+    private AbstractPrice price;
 
     public Movie(String title, int priceCode) {
         this.title = title;
-        this.priceCode = priceCode;
+        // 确保任何时候都通过getter或者setter来访问priceCode
+        setPriceCode(priceCode);
     }
 
     public String getTitle() {
@@ -42,11 +43,23 @@ public class Movie {
     }
 
     public int getPriceCode() {
-        return priceCode;
+        return price.getPriceCode();
     }
 
     public void setPriceCode(int priceCode) {
-        this.priceCode = priceCode;
+        switch (priceCode) {
+            case REGULAR:
+                price = new RegularPrice();
+                break;
+            case CHILDRENS:
+                price = new ChildrensPrice();
+                break;
+            case NEW_RELEASE:
+                price = new NewReleasePrice();
+                break;
+            default:
+                price = new RegularPrice();
+        }
     }
 
     public BigDecimal getCharge(int daysRented) {
