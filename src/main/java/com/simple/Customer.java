@@ -39,8 +39,7 @@ public class Customer {
         StringBuilder result = new StringBuilder();
         result.append("Rental Record for ").append(getName()).append("\n");
         for (Rental rental : rentalList) {
-            BigDecimal thisAmount = rental.getCharge();
-            result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(thisAmount.toString()).append("\n");
+            result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(rental.getCharge().toString()).append("\n");
         }
         result.append("Amount owed is ").append(getTotalCharge().toString()).append("\n");
         result.append("You earned ").append(getTotalFrequentRenterPoints()).append(" frequent renter points");
