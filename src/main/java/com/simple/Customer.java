@@ -36,18 +36,29 @@ public class Customer {
     }
 
     public String statement() {
-        // 常客积分
-        int frequentRenterPoints = 0;
         StringBuilder result = new StringBuilder();
         result.append("Rental Record for ").append(getName()).append("\n");
         for (Rental rental : rentalList) {
             BigDecimal thisAmount = rental.getCharge();
-            frequentRenterPoints += rental.getFrequentRenterPoints();
             result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(thisAmount.toString()).append("\n");
         }
         result.append("Amount owed is ").append(getTotalCharge().toString()).append("\n");
-        result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
+        result.append("You earned ").append(getTotalFrequentRenterPoints()).append(" frequent renter points");
         return result.toString();
+    }
+
+    /**
+     * 计算常客积分
+     *
+     * @return 常客积分
+     */
+    private int getTotalFrequentRenterPoints() {
+        return rentalList.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
+//        int frequentRenterPoints = 0;
+//        for (Rental rental : rentalList) {
+//            frequentRenterPoints += rental.getFrequentRenterPoints();
+//        }
+//        return frequentRenterPoints;
     }
 
     /**
