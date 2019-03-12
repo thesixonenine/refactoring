@@ -38,11 +38,18 @@ public class Customer {
     public String statement() {
         StringBuilder result = new StringBuilder();
         result.append("Rental Record for ").append(getName()).append("\n");
-        for (Rental rental : rentalList) {
-            result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(rental.getCharge().toString()).append("\n");
-        }
+        rentalList.forEach(rental -> result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(rental.getCharge().toString()).append("\n"));
         result.append("Amount owed is ").append(getTotalCharge().toString()).append("\n");
         result.append("You earned ").append(getTotalFrequentRenterPoints()).append(" frequent renter points");
+        return result.toString();
+    }
+
+    public String htmlStatement() {
+        StringBuilder result = new StringBuilder();
+        result.append("<h1>Rentals for <em>").append(getName()).append("</em></h1><p>\n");
+        rentalList.forEach(rental -> result.append(rental.getMovie().getTitle()).append(": ").append(rental.getCharge().toString()).append("<br>\n"));
+        result.append("<p>You owe <em>").append(getTotalCharge().toString()).append("</em><p>\n");
+        result.append("On this rental you earned <em>").append(getTotalFrequentRenterPoints()).append("</em> frequent renter points<p>");
         return result.toString();
     }
 
