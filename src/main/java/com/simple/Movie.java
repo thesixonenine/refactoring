@@ -63,41 +63,7 @@ public class Movie {
     }
 
     public BigDecimal getCharge(int daysRented) {
-        BigDecimal result = BigDecimal.ZERO;
-        switch (getPriceCode()) {
-            case Movie.REGULAR:
-                result = result.add(new BigDecimal("2"));
-                if (daysRented > 2) {
-                    result = result.add(
-                            new BigDecimal(Integer.toString(daysRented - 2))
-                                    .multiply(new BigDecimal("1.5"))
-                    );
-                }
-                break;
-            case Movie.NEW_RELEASE:
-                result = result.add(
-                        new BigDecimal(Integer.toString(daysRented * 3))
-                );
-                break;
-            case Movie.CHILDRENS:
-                result = result.add(new BigDecimal("1.5"));
-                if (daysRented > 3) {
-                    result = result.add(
-                            new BigDecimal(Integer.toString(daysRented - 3))
-                                    .multiply(new BigDecimal("1.5"))
-                    );
-                }
-                break;
-            default:
-                result = result.add(new BigDecimal("2"));
-                if (daysRented > 2) {
-                    result = result.add(
-                            new BigDecimal(Integer.toString(daysRented - 2))
-                                    .multiply(new BigDecimal("1.5"))
-                    );
-                }
-        }
-        return result;
+        return price.getCharge(daysRented);
     }
 
     public int getFrequentRenterPoints(int daysRented) {
