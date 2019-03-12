@@ -43,41 +43,9 @@ public class Customer {
         AtomicInteger frequentRenterPoints = new AtomicInteger(0);
         StringBuilder result = new StringBuilder();
         result.append("Rental Record for ").append(getName()).append("\n");
-        rentalList.forEach(rental -> {
-            BigDecimal thisAmount = new BigDecimal("0");
-            switch (rental.getMovie().getPriceCode()) {
-                case Movie.REGULAR:
-                    thisAmount = thisAmount.add(new BigDecimal("2"));
-                    if (rental.getDaysRented() > 2) {
-                        thisAmount = thisAmount.add(
-                                new BigDecimal(Integer.toString(rental.getDaysRented() - 2))
-                                        .multiply(new BigDecimal("1.5"))
-                        );
-                    }
-                    break;
-                case Movie.NEW_RELEASE:
-                    thisAmount = thisAmount.add(
-                            new BigDecimal(Integer.toString(rental.getDaysRented() * 3))
-                    );
-                    break;
-                case Movie.CHILDRENS:
-                    thisAmount = thisAmount.add(new BigDecimal("1.5"));
-                    if (rental.getDaysRented() > 3) {
-                        thisAmount = thisAmount.add(
-                                new BigDecimal(Integer.toString(rental.getDaysRented() - 3))
-                                        .multiply(new BigDecimal("1.5"))
-                        );
-                    }
-                    break;
-                default:
-                    thisAmount = thisAmount.add(new BigDecimal("2"));
-                    if (rental.getDaysRented() > 2) {
-                        thisAmount = thisAmount.add(
-                                new BigDecimal(Integer.toString(rental.getDaysRented() - 2))
-                                        .multiply(new BigDecimal("1.5"))
-                        );
-                    }
-            }
+        for (int i = 0; i < rentalList.size(); i++) {
+            Rental rental = rentalList.get(i);
+            BigDecimal thisAmount = amountFor(rental);
             frequentRenterPoints.incrementAndGet();
             if (rental.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
                     rental.getDaysRented() > 1) {
@@ -85,9 +53,47 @@ public class Customer {
             }
             result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(thisAmount.toString()).append("\n");
             totalAmounts[0] = totalAmounts[0].add(thisAmount);
-        });
+        }
         result.append("Amount owed is ").append(totalAmounts[0].toString()).append("\n");
         result.append("You earned ").append(frequentRenterPoints.toString()).append(" frequent renter points");
         return result.toString();
+    }
+
+    private BigDecimal amountFor(Rental rental) {
+        BigDecimal thisAmount = BigDecimal.ZERO;
+        switch (rental.getMovie().getPriceCode()) {
+            case Movie.REGULAR:
+                thisAmount = thisAmount.add(new BigDecimal("2"));
+                if (rental.getDaysRented() > 2) {
+                    thisAmount = thisAmount.add(
+                            new BigDecimal(Integer.toString(rental.getDaysRented() - 2))
+                                    .multiply(new BigDecimal("1.5"))
+                    );
+                }
+                break;
+            case Movie.NEW_RELEASE:
+                thisAmount = thisAmount.add(
+                        new BigDecimal(Integer.toString(rental.getDaysRented() * 3))
+                );
+                break;
+            case Movie.CHILDRENS:
+                thisAmount = thisAmount.add(new BigDecimal("1.5"));
+                if (rental.getDaysRented() > 3) {
+                    thisAmount = thisAmount.add(
+                            new BigDecimal(Integer.toString(rental.getDaysRented() - 3))
+                                    .multiply(new BigDecimal("1.5"))
+                    );
+                }
+                break;
+            default:
+                thisAmount = thisAmount.add(new BigDecimal("2"));
+                if (rental.getDaysRented() > 2) {
+                    thisAmount = thisAmount.add(
+                            new BigDecimal(Integer.toString(rental.getDaysRented() - 2))
+                                    .multiply(new BigDecimal("1.5"))
+                    );
+                }
+        }
+        return thisAmount;
     }
 }
