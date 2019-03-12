@@ -36,8 +36,6 @@ public class Customer {
     }
 
     public String statement() {
-        // 总共需要支付的金额
-        BigDecimal totalAmount = new BigDecimal("0");
         // 常客积分
         int frequentRenterPoints = 0;
         StringBuilder result = new StringBuilder();
@@ -46,10 +44,23 @@ public class Customer {
             BigDecimal thisAmount = rental.getCharge();
             frequentRenterPoints += rental.getFrequentRenterPoints();
             result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(thisAmount.toString()).append("\n");
-            totalAmount = totalAmount.add(thisAmount);
         }
-        result.append("Amount owed is ").append(totalAmount.toString()).append("\n");
+        result.append("Amount owed is ").append(getTotalCharge().toString()).append("\n");
         result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
         return result.toString();
+    }
+
+    /**
+     * 计算总共需要支付的金额
+     *
+     * @return 总共需要支付的金额
+     */
+    private BigDecimal getTotalCharge() {
+        return rentalList.stream().map(Rental::getCharge).reduce(BigDecimal.ZERO, BigDecimal::add);
+//        BigDecimal totalAmount = new BigDecimal("0");
+//        for (Rental rental : rentalList) {
+//            totalAmount = totalAmount.add(rental.getCharge());
+//        }
+//        return totalAmount;
     }
 }
