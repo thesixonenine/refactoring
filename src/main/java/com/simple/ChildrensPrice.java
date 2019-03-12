@@ -1,5 +1,7 @@
 package com.simple;
 
+import java.math.BigDecimal;
+
 /**
  * 儿童价
  *
@@ -12,5 +14,17 @@ public class ChildrensPrice extends AbstractPrice {
     @Override
     int getPriceCode() {
         return Movie.CHILDRENS;
+    }
+
+    @Override
+    public BigDecimal getCharge(int daysRented) {
+        BigDecimal result = new BigDecimal("1.5");
+        if (daysRented > 3) {
+            result = result.add(
+                    new BigDecimal(Integer.toString(daysRented - 3))
+                            .multiply(new BigDecimal("1.5"))
+            );
+        }
+        return result;
     }
 }

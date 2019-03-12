@@ -1,5 +1,7 @@
 package com.simple;
 
+import java.math.BigDecimal;
+
 /**
  * 新片价
  *
@@ -12,5 +14,10 @@ public class NewReleasePrice extends AbstractPrice {
     @Override
     int getPriceCode() {
         return Movie.NEW_RELEASE;
+    }
+
+    @Override
+    public BigDecimal getCharge(int daysRented) {
+        return new BigDecimal(Integer.toString(daysRented * 3));
     }
 }
