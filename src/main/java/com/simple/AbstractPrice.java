@@ -25,4 +25,8 @@ public abstract class AbstractPrice {
      * @return 价格
      */
     abstract BigDecimal getCharge(int daysRented);
+
+    public int getFrequentRenterPoints(int daysRented) {
+        return 1;
+    }
 }
