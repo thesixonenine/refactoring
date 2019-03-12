@@ -1,0 +1,93 @@
+package com.simple;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * 顾客类
+ *
+ * @author simple
+ * @version 1.0
+ * @date 2019-03-12 09:27
+ * @since 1.0
+ */
+public class Customer {
+    /**
+     * 顾客的姓名
+     */
+    private String name;
+    /**
+     * 顾客的租赁记录
+     */
+    private List<Rental> rentalList = Collections.synchronizedList(new ArrayList<>());
+
+    public Customer(String name) {
+        this.name = name;
+    }
+
+    public void addRental(Rental newRental) {
+        rentalList.add(newRental);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String statement() {
+        // 总共需要支付的金额
+        final BigDecimal[] totalAmounts = {new BigDecimal("0")};
+        // 常客积分
+        AtomicInteger frequentRenterPoints = new AtomicInteger(0);
+        StringBuilder result = new StringBuilder();
+        result.append("Rental Record for ").append(getName()).append("\n");
+        rentalList.forEach(rental -> {
+            BigDecimal thisAmount = new BigDecimal("0");
+            switch (rental.getMovie().getPriceCode()) {
+                case Movie.REGULAR:
+                    thisAmount = thisAmount.add(new BigDecimal("2"));
+                    if (rental.getDaysRented() > 2) {
+                        thisAmount = thisAmount.add(
+                                new BigDecimal(Integer.toString(rental.getDaysRented() - 2))
+                                        .multiply(new BigDecimal("1.5"))
+                        );
+                    }
+                    break;
+                case Movie.NEW_RELEASE:
+                    thisAmount = thisAmount.add(
+                            new BigDecimal(Integer.toString(rental.getDaysRented() * 3))
+                    );
+                    break;
+                case Movie.CHILDRENS:
+                    thisAmount = thisAmount.add(new BigDecimal("1.5"));
+                    if (rental.getDaysRented() > 3) {
+                        thisAmount = thisAmount.add(
+                                new BigDecimal(Integer.toString(rental.getDaysRented() - 3))
+                                        .multiply(new BigDecimal("1.5"))
+                        );
+                    }
+                    break;
+                default:
+                    thisAmount = thisAmount.add(new BigDecimal("2"));
+                    if (rental.getDaysRented() > 2) {
+                        thisAmount = thisAmount.add(
+                                new BigDecimal(Integer.toString(rental.getDaysRented() - 2))
+                                        .multiply(new BigDecimal("1.5"))
+                        );
+                    }
+            }
+            frequentRenterPoints.incrementAndGet();
+            if (rental.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
+                    rental.getDaysRented() > 1) {
+                frequentRenterPoints.incrementAndGet();
+            }
+            result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(thisAmount.toString()).append("\n");
+            totalAmounts[0] = totalAmounts[0].add(thisAmount);
+        });
+        result.append("Amount owed is ").append(totalAmounts[0].toString()).append("\n");
+        result.append("You earned ").append(frequentRenterPoints.toString()).append(" frequent renter points");
+        return result.toString();
+    }
+}
