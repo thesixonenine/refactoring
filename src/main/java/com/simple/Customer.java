@@ -37,19 +37,18 @@ public class Customer {
 
     public String statement() {
         // 总共需要支付的金额
-        final BigDecimal[] totalAmounts = {new BigDecimal("0")};
+        BigDecimal totalAmount = new BigDecimal("0");
         // 常客积分
         int frequentRenterPoints = 0;
         StringBuilder result = new StringBuilder();
         result.append("Rental Record for ").append(getName()).append("\n");
-        for (int i = 0; i < rentalList.size(); i++) {
-            Rental rental = rentalList.get(i);
+        for (Rental rental : rentalList) {
             BigDecimal thisAmount = rental.getCharge();
             frequentRenterPoints += rental.getFrequentRenterPoints();
             result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(thisAmount.toString()).append("\n");
-            totalAmounts[0] = totalAmounts[0].add(thisAmount);
+            totalAmount = totalAmount.add(thisAmount);
         }
-        result.append("Amount owed is ").append(totalAmounts[0].toString()).append("\n");
+        result.append("Amount owed is ").append(totalAmount.toString()).append("\n");
         result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
         return result.toString();
     }
