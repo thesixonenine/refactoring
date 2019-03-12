@@ -36,10 +36,6 @@ public class Customer {
         return name;
     }
 
-    private BigDecimal amountFor(Rental aRental){
-        return aRental.getCharge();
-    }
-
     public String statement() {
         // 总共需要支付的金额
         final BigDecimal[] totalAmounts = {new BigDecimal("0")};
@@ -49,7 +45,7 @@ public class Customer {
         result.append("Rental Record for ").append(getName()).append("\n");
         for (int i = 0; i < rentalList.size(); i++) {
             Rental rental = rentalList.get(i);
-            BigDecimal thisAmount = amountFor(rental);
+            BigDecimal thisAmount = rental.getCharge();
             frequentRenterPoints.incrementAndGet();
             if (rental.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
                     rental.getDaysRented() > 1) {
