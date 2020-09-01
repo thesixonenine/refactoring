@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class ChildrenPrice extends AbstractPrice {
     @Override
     int getPriceCode() {
-        return Movie.CHILDRENS;
+        return Movie.CHILDREN;
     }
 
     @Override

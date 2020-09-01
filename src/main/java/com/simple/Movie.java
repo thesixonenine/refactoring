@@ -14,7 +14,7 @@ public class Movie {
     /**
      * 儿童
      */
-    public static final int CHILDRENS = 2;
+    public static final int CHILDREN = 2;
     /**
      * 正常
      */
@@ -51,7 +51,7 @@ public class Movie {
             case REGULAR:
                 price = new RegularPrice();
                 break;
-            case CHILDRENS:
+            case CHILDREN:
                 price = new ChildrenPrice();
                 break;
             case NEW_RELEASE:
