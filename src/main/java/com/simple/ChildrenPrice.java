@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * @date 2019-03-12 16:50
  * @since 1.0
  */
-public class ChildrensPrice extends AbstractPrice {
+public class ChildrenPrice extends AbstractPrice {
     @Override
     int getPriceCode() {
         return Movie.CHILDRENS;

@@ -52,7 +52,7 @@ public class Movie {
                 price = new RegularPrice();
                 break;
             case CHILDRENS:
-                price = new ChildrensPrice();
+                price = new ChildrenPrice();
                 break;
             case NEW_RELEASE:
                 price = new NewReleasePrice();
