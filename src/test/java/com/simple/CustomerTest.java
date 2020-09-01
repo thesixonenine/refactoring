@@ -2,6 +2,7 @@ package com.simple;
 
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @date 2019-03-12 11:32
  * @since 1.0
  */
+@DisplayName("顾客测试")
 class CustomerTest {
     private Customer customer;
     /**
@@ -61,6 +63,7 @@ class CustomerTest {
     }
 
     @Test
+    @DisplayName("第一次测试")
     void statementTest01() {
         assertEquals(customer.statement(), result);
     }
